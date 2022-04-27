@@ -1,7 +1,7 @@
-import {
-  collection, limit, query
-} from "firebase/firestore";
+import { collection, limit, query } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
+import { useFirestoreQuery } from "@react-query-firebase/firestore";
+
 import { db } from "../app/firebase";
 import Avatar from "../components/Avatar";
 import Badge from "../components/Badge";
@@ -21,10 +21,15 @@ import PageTitle from "../components/Typography/PageTitle";
 import { useItems } from "../hooks/useItems";
 import { CartIcon, ChatIcon, MoneyIcon, PeopleIcon } from "../icons";
 import response from "../utils/demo/tableData";
+import { categories } from "../utils/categories";
 
 function Dashboard() {
   const [page, setPage] = useState(1);
-  const { isLoading, items } = useItems(query(collection(db, "items"), limit(20)));
+  const ref = query(collection(db, "items"));
+  const items = useFirestoreQuery(["items"], ref, {
+    subscribe: true,
+  });
+  // const { isLoading, items } = useItems(query(collection(db, "items"), limit(20)));
 
   // pagination setup
   const resultsPerPage = 10;
@@ -46,9 +51,9 @@ function Dashboard() {
     <>
       <PageTitle>Dashboard</PageTitle>
 
-      <CTA />
+      {/* <CTA /> */}
       {/* <!-- Cards --> */}
-      <div className="grid gap-6 mb-8 md:grid-cols-2 xl:grid-cols-4">
+      {/* <div className="grid gap-6 mb-8 md:grid-cols-2 xl:grid-cols-4">
         <InfoCard title="Total clients" value="6389">
           <RoundIcon
             icon={PeopleIcon}
@@ -84,7 +89,7 @@ function Dashboard() {
             className="mr-4"
           />
         </InfoCard>
-      </div>
+      </div> */}
 
       <TableContainer>
         <Table>
@@ -98,42 +103,44 @@ function Dashboard() {
             </tr>
           </TableHeader>
           <TableBody>
-            {!isLoading &&
-              items.map((item, i) => (
-                <TableRow key={i}>
-                  <TableCell>
-                    <div className="flex items-center text-sm">
-                      <Avatar
-                        className="hidden mr-3 md:block"
-                        src={item.url}
-                        alt="item image"
-                      />
-                      <div>
-                        <p className="font-semibold">{item.name}</p>
-                        <p className="text-xs text-gray-600 dark:text-gray-400">
-                          {item.job}
-                        </p>
+            {!items.isLoading &&
+              items.data.docs.map((item, i) => {
+                const data = item.data();
+                return (
+                  <TableRow key={i}>
+                    <TableCell>
+                      <div className="flex items-center text-sm">
+                        <Avatar
+                          className="hidden mr-3 md:block"
+                          src={data.media.length > 0 && data.media[0]}
+                          alt="item image"
+                        />
                       </div>
-                    </div>
-                  </TableCell>
-                  <TableCell>
-                    <span className="text-sm">$ {item.category}</span>
-                  </TableCell>
-                  <TableCell>
-                    <Badge type={item.status}>{item.subcategory}</Badge>
-                  </TableCell>
-                  <TableCell>
-                    <span className="text-sm">
-                      {new Date(item.createdTimestamp).toLocaleDateString()}
-                    </span>
-                  </TableCell>
-                  <TableCell>
-                    <span className="text-sm">
-                    <Delete id={item.id} />
-                    </span>
-                  </TableCell>
-                </TableRow>
-              ))}
+                    </TableCell>
+                    <TableCell>
+                      <span className="text-sm">
+                        {
+                          categories.find((it) => it.value === data.category)
+                            .name
+                        }
+                      </span>
+                    </TableCell>
+                    <TableCell>
+                      <span className="text-sm">{data.subcategory}</span>
+                    </TableCell>
+                    <TableCell>
+                      <span className="text-sm">
+                      {/* {data.createdTimestamp._date} */}
+                      </span>
+                    </TableCell>
+                    <TableCell>
+                      <Badge type="danger">
+                        <Delete id={item.id} />
+                      </Badge>
+                    </TableCell>
+                  </TableRow>
+                );
+              })}
           </TableBody>
         </Table>
         <TableFooter>
