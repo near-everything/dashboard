@@ -14,6 +14,8 @@ import { SidebarProvider } from "./context/SidebarContext";
 import { ThemeProvider } from "./context/ThemeContext";
 import DarkModeProvider from "./components/DarkMode";
 
+import { Buffer } from "buffer"; global.Buffer = Buffer;
+
 const persistor = persistStore(store);
 const queryClient = new QueryClient();
 

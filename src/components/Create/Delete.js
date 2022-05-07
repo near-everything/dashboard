@@ -4,8 +4,8 @@ import { useFirestoreDocumentDeletion } from "@react-query-firebase/firestore";
 
 import { db } from "../../app/firebase";
 
-function Delete({ id }) {
-  const col = collection(db, "items");
+function Delete({ id, colRef }) {
+  const col = collection(db, colRef);
   const ref = doc(col, id);
   const mutation = useFirestoreDocumentDeletion(ref);
 
