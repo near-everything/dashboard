@@ -6,12 +6,15 @@ function ImageCard({ index, media, removeImage }) {
   return (
     <Card>
       <div className="relative">
-        <button
-          className="absolute top-0 right-2 z-10"
-          onClick={() => removeImage(index)}
-        >
-          &times;
-        </button>
+        {removeImage ? (
+          <button
+            className="absolute top-0 right-2 z-10"
+            onClick={() => removeImage(index)}
+          >
+            &times;
+          </button>
+        ) : null}
+
         <CardBody className="flex flex-col">
           <img alt="not found" src={media} className="w-32 m-2" />
         </CardBody>

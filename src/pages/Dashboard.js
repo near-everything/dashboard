@@ -26,7 +26,7 @@ function Dashboard() {
 
   const myItemsRef = query(
     collection(db, "items"),
-    where("createdBy", "==", user)
+    // where("createdBy", "==", user)
   );
   const items = useFirestoreQuery(["items"], myItemsRef, {
     subscribe: true,
