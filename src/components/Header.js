@@ -1,13 +1,13 @@
-import React, { useContext, useState } from "react";
+import { useContext, useState } from "react";
 import { SidebarContext } from "../context/SidebarContext";
 import {
-  MenuIcon, MoonIcon, OutlineCogIcon,
-  OutlineLogoutIcon, OutlinePersonIcon, SunIcon
+  MenuIcon,
+  MoonIcon, SunIcon
 } from "../icons";
+import { signIn } from "./../app/near";
 import Avatar from "./Avatar";
+import Button from "./Button";
 import { DarkModeContext } from "./DarkMode";
-import Dropdown from "./Dropdown";
-import DropdownItem from "./DropdownItem";
 
 function Header() {
   const { mode, toggleMode } = useContext(DarkModeContext);
@@ -57,6 +57,9 @@ function Header() {
                 <MoonIcon className="w-5 h-5" aria-hidden="true" />
               )}
             </button>
+          </li>
+          <li className="flex">
+            <Button onClick={signIn}>connect wallet</Button>
           </li>
           {/* <!-- Profile menu --> */}
           <li className="relative">

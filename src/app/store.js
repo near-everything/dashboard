@@ -4,12 +4,16 @@ import storage from 'redux-persist/lib/storage';
 import { persistReducer } from 'redux-persist';
 import thunk from 'redux-thunk';
 
+import describeReducer from '../features/describe/describeSlice';
 import counterReducer from '../features/counter/counterSlice';
 import authReducer from '../features/auth/authSlice';
+import nearReducer from "../features/near/nearSlice";
 
 const reducers = combineReducers({
+  describe: describeReducer,
   counter: counterReducer,
-  auth: authReducer
+  auth: authReducer,
+  near: nearReducer
 });
 
 const persistConfig = {

@@ -1,10 +1,11 @@
 import { useFirestoreQuery } from "@react-query-firebase/firestore";
 import { collection, query, where } from "firebase/firestore";
 import React, { useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { db } from "../app/firebase";
 import Avatar from "../components/Avatar";
 import Badge from "../components/Badge";
+import Button from "../components/Button";
 import Delete from "../components/Create/Delete";
 import Pagination from "../components/Pagination";
 import Table from "../components/Table";
@@ -17,15 +18,16 @@ import TableRow from "../components/TableRow";
 import PageTitle from "../components/Typography/PageTitle";
 import SectionTitle from "../components/Typography/SectionTitle";
 import { selectUser } from "../features/auth/authSlice";
-import { categories } from "../utils/categories";
+import { mint } from "../features/near/nearSlice";
 import response from "../utils/demo/tableData";
 
 function Dashboard() {
   const [page, setPage] = useState(1);
   const user = useSelector(selectUser);
+  const dispatch = useDispatch();
 
   const myItemsRef = query(
-    collection(db, "items"),
+    collection(db, "items")
     // where("createdBy", "==", user)
   );
   const items = useFirestoreQuery(["items"], myItemsRef, {
@@ -49,6 +51,10 @@ function Dashboard() {
   function onPageChange(p) {
     setPage(p);
     // items.fetchNextPage();
+  }
+
+  function approve(id) {
+    dispatch(mint({ id }));
   }
 
   // on page change, load new sliced data
@@ -130,12 +136,7 @@ function Dashboard() {
                       </div>
                     </TableCell>
                     <TableCell>
-                      <span className="text-sm">
-                        {
-                          categories.find((it) => it.value === data.category)
-                            .name
-                        }
-                      </span>
+                      <span className="text-sm">{data.category}</span>
                     </TableCell>
                     <TableCell>
                       <span className="text-sm">{data.subcategory}</span>
@@ -144,6 +145,11 @@ function Dashboard() {
                       <span className="text-sm">
                         {/* {data.createdTimestamp._date} */}
                       </span>
+                    </TableCell>
+                    <TableCell>
+                      <Badge type="primary">
+                        <Button onClick={() => approve(item.id)} id={item.id} />
+                      </Badge>
                     </TableCell>
                     <TableCell>
                       <Badge type="danger">
@@ -196,12 +202,7 @@ function Dashboard() {
                       </div>
                     </TableCell>
                     <TableCell>
-                      <span className="text-sm">
-                        {
-                          categories.find((it) => it.value === data.category)
-                            .name
-                        }
-                      </span>
+                      <span className="text-sm">{data.category}</span>
                     </TableCell>
                     <TableCell>
                       <span className="text-sm">{data.subcategory}</span>

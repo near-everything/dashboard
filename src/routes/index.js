@@ -6,6 +6,7 @@ const Collect = lazy(() => import("../pages/Collect"));
 const Organize = lazy(() => import("../pages/Organize"));
 const Item = lazy(() => import("../pages/Item"));
 const Request = lazy(() => import("../pages/Request"));
+const Describe = lazy(() => import("../pages/Describe"));
 const Invite = lazy(() => import("../pages/Invite"));
 const Page404 = lazy(() => import("../pages/404"));
 
@@ -39,6 +40,10 @@ const routes = [
   {
     path: "/request",
     component: Request,
+  },
+  {
+    path: "/describe/*",
+    component: Describe,
   },
   {
     path: "/invite",

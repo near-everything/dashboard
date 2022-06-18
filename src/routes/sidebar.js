@@ -27,6 +27,11 @@ const routes = [
     name: 'Request', // name that appear in Sidebar
   },
   {
+    path: '/describe', // the url
+    icon: 'SearchIcon', // the component being exported from icons/index.js
+    name: 'Describe', // name that appear in Sidebar
+  },
+  {
     icon: 'PagesIcon',
     name: 'Pages',
     routes: [
