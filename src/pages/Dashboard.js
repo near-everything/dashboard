@@ -53,8 +53,8 @@ function Dashboard() {
     // items.fetchNextPage();
   }
 
-  function approve(id) {
-    dispatch(mint({ id }));
+  function approve(id, data) {
+    dispatch(mint({ id,data }));
   }
 
   // on page change, load new sliced data
@@ -148,7 +148,7 @@ function Dashboard() {
                     </TableCell>
                     <TableCell>
                       <Badge type="primary">
-                        <Button onClick={() => approve(item.id)} id={item.id} />
+                        <Button onClick={() => approve(item.id, data)} id={item.id} />
                       </Badge>
                     </TableCell>
                     <TableCell>

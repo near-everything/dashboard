@@ -1,15 +1,14 @@
 import {
   getAuth,
   RecaptchaVerifier,
-  signInWithPhoneNumber
+  signInWithPhoneNumber,
 } from "firebase/auth";
-import { collection, doc, getDoc } from "firebase/firestore";
+import { collection, doc, getDoc, setDoc, Timestamp } from "firebase/firestore";
 import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { db, firebase } from "../app/firebase";
 import Button from "../components/Button";
 import Input from "../components/Input";
-
 
 function Login() {
   const [recaptcha, setRecaptcha] = useState(null);
@@ -45,6 +44,7 @@ function PhoneNumberVerification({ recaptcha }) {
   const [invited, setInvited] = useState(false);
   const [confirmationResult, setConfirmationResult] = useState(null);
   const [code, setCode] = useState("");
+  const invitesRef = collection(db, "invites");
 
   const auth = getAuth(firebase);
   let navigate = useNavigate();
@@ -90,6 +90,17 @@ function PhoneNumberVerification({ recaptcha }) {
       });
   };
 
+  const requestInvite = async () => {
+    try {
+      await setDoc(doc(invitesRef, phoneNumber), {
+        isApproved: false,
+        createdTimestamp: Timestamp.now(),
+      });
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   return (
     <div className="flex items-center min-h-screen p-6 bg-gray-50 dark:bg-gray-900">
       <div className="flex-1 h-full max-w-4xl mx-auto overflow-hidden bg-white rounded-lg shadow-xl dark:bg-gray-800">
@@ -106,14 +117,29 @@ function PhoneNumberVerification({ recaptcha }) {
                   placeholder="XXX-XXX-XXXX"
                   onChange={(e) => setDigits(e.target.value)}
                 />
-                <Button
-                  className={`mx-2 ${invited ? "" : "hidden"}`}
-                  disabled={!invited}
-                  aria-live="polite"
-                  onClick={signIn}
-                >
-                  Submit
-                </Button>
+                {invited ? (
+                  <>
+                    <Button
+                      className={`mx-2 ${phoneNumber.length === 12 ? "" : "hidden"}`}
+                      disabled={!invited}
+                      aria-live="polite"
+                      onClick={signIn}
+                    >
+                      Submit
+                    </Button>
+                  </>
+                ) : (
+                  <>
+                    <Button
+                      className={`mx-2 ${phoneNumber.length === 12 ? "" : "hidden"}`}
+                      disabled={invited}
+                      aria-live="polite"
+                      onClick={requestInvite}
+                    >
+                      Request Invitation
+                    </Button>
+                  </>
+                )}
               </div>
               <br />
               {confirmationResult && (

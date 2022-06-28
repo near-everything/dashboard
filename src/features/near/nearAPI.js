@@ -21,7 +21,7 @@ export async function approveItem(id) {
   );
 }
 
-export async function mintItem(id) {
+export async function mintItem(id, item) {
   await approveItem(id);
   const account = getAccount();
   return new Promise((resolve, reject) => {
@@ -32,6 +32,7 @@ export async function mintItem(id) {
         metadata: {
           title: "test title",
           description: "test description",
+          extra: JSON.stringify(item)
         },
         receiver_id: account.accountId,
       },

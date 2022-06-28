@@ -6,8 +6,8 @@ const initialState = {
 };
 
 export const mint = createAsyncThunk("near/mint", async (data) => {
-  const { id } = data;
-  const response = await mintItem(id);
+  const { id, data: item } = data;
+  const response = await mintItem(id, item);
   // The value we return becomes the `fulfilled` action payload
   return response;
 });
