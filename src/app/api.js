@@ -1,7 +1,8 @@
 import request, { gql } from "graphql-request";
-import { useMutation, useQuery } from "react-query";
+import { QueryClient, useMutation, useQuery } from "react-query";
 
 export const API_URL = process.env.REACT_APP_EVERYTHING_API_URL;
+export const queryClient = new QueryClient();
 
 export function useItems() {
   return useQuery("items", async () => {
