@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useItems } from "../app/api";
 import Avatar from "../components/Avatar";
 import Badge from "../components/Badge";
 import Button from "../components/Button";
@@ -16,6 +15,7 @@ import TableRow from "../components/TableRow";
 import PageTitle from "../components/Typography/PageTitle";
 import SectionTitle from "../components/Typography/SectionTitle";
 import { selectUser } from "../features/auth/authSlice";
+import { useItems } from "../features/items/itemsApi";
 import { mint } from "../features/near/nearSlice";
 import response from "../utils/demo/tableData";
 

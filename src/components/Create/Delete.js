@@ -1,5 +1,4 @@
-
-import { useDeleteItem } from "../../app/api";
+import { useDeleteItem } from "../../features/items/itemsApi";
 
 function DeleteItem({ id }) {
   const deleteItem = useDeleteItem();

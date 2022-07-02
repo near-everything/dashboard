@@ -12,16 +12,6 @@ const routes = [
     name: 'Dashboard', // name that appear in Sidebar
   },
   {
-    path: '/collect', // the url
-    icon: 'EditIcon', // the component being exported from icons/index.js
-    name: 'Collect', // name that appear in Sidebar
-  },
-  {
-    path: '/organize', // the url
-    icon: 'ImageIcon', // the component being exported from icons/index.js
-    name: 'Organize', // name that appear in Sidebar
-  },
-  {
     path: '/request', // the url
     icon: 'SearchIcon', // the component being exported from icons/index.js
     name: 'Request', // name that appear in Sidebar
@@ -30,6 +20,11 @@ const routes = [
     path: '/describe', // the url
     icon: 'SearchIcon', // the component being exported from icons/index.js
     name: 'Describe', // name that appear in Sidebar
+  },
+  {
+    path: '/invite', // the url
+    icon: 'SearchIcon', // the component being exported from icons/index.js
+    name: 'Invite', // name that appear in Sidebar
   },
   {
     icon: 'PagesIcon',
