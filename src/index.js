@@ -1,23 +1,25 @@
 import React, { Suspense } from "react";
 import ReactDom from "react-dom";
+import { QueryClientProvider } from "react-query";
+import { ReactQueryDevtools } from "react-query/devtools";
 import { Provider } from "react-redux";
-import { PersistGate } from "redux-persist/integration/react";
 import { persistStore } from "redux-persist";
-import { QueryClient, QueryClientProvider } from "react-query";
+import { PersistGate } from "redux-persist/integration/react";
 
-import "./index.css";
 import App from "./App";
 import { store } from "./app/store";
-import * as serviceWorker from "./serviceWorker";
+import DarkModeProvider from "./components/DarkMode";
 import ThemedSuspense from "./components/ThemedSuspense";
 import { SidebarProvider } from "./context/SidebarContext";
 import { ThemeProvider } from "./context/ThemeContext";
-import DarkModeProvider from "./components/DarkMode";
+import "./index.css";
+import * as serviceWorker from "./serviceWorker";
 
-import { Buffer } from "buffer"; global.Buffer = Buffer;
+import { Buffer } from "buffer";
+import { queryClient } from "./app/api";
+global.Buffer = Buffer;
 
 const persistor = persistStore(store);
-const queryClient = new QueryClient();
 
 ReactDom.render(
   <React.StrictMode>
@@ -29,6 +31,7 @@ ReactDom.render(
               <Suspense fallback={<ThemedSuspense />}>
                 <QueryClientProvider client={queryClient}>
                   <App />
+                  <ReactQueryDevtools initialIsOpen={false} />
                 </QueryClientProvider>
               </Suspense>
             </PersistGate>

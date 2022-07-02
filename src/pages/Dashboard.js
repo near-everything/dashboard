@@ -1,12 +1,9 @@
-import { useFirestoreQuery } from "@react-query-firebase/firestore";
-import { collection, query, where } from "firebase/firestore";
-import React, { useState } from "react";
+import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { db } from "../app/firebase";
 import Avatar from "../components/Avatar";
 import Badge from "../components/Badge";
 import Button from "../components/Button";
-import Delete from "../components/Create/Delete";
+import DeleteItem from "../components/Create/Delete";
 import Pagination from "../components/Pagination";
 import Table from "../components/Table";
 import TableBody from "../components/TableBody";
@@ -18,6 +15,7 @@ import TableRow from "../components/TableRow";
 import PageTitle from "../components/Typography/PageTitle";
 import SectionTitle from "../components/Typography/SectionTitle";
 import { selectUser } from "../features/auth/authSlice";
+import { useItems } from "../features/items/itemsApi";
 import { mint } from "../features/near/nearSlice";
 import response from "../utils/demo/tableData";
 
@@ -26,22 +24,7 @@ function Dashboard() {
   const user = useSelector(selectUser);
   const dispatch = useDispatch();
 
-  const myItemsRef = query(
-    collection(db, "items")
-    // where("createdBy", "==", user)
-  );
-  const items = useFirestoreQuery(["items"], myItemsRef, {
-    subscribe: true,
-  });
-
-  const requestsRef = query(
-    collection(db, "requests"),
-    where("isFulfilled", "==", false)
-  );
-  const requests = useFirestoreQuery(["requests"], requestsRef, {
-    subscribe: true,
-  });
-  // const { isLoading, items } = useItems(query(collection(db, "items"), limit(20)));
+  const { data, isLoading, isError } = useItems();
 
   // pagination setup
   const resultsPerPage = 10;
@@ -54,7 +37,7 @@ function Dashboard() {
   }
 
   function approve(id, data) {
-    dispatch(mint({ id,data }));
+    dispatch(mint({ id, data }));
   }
 
   // on page change, load new sliced data
@@ -119,27 +102,28 @@ function Dashboard() {
             </tr>
           </TableHeader>
           <TableBody>
-            {!items.isLoading &&
-              items.data &&
-              items.data.docs &&
-              items.data.docs.map((item, i) => {
-                const data = item.data();
+            {!isLoading &&
+              data?.map((item, i) => {
                 return (
                   <TableRow key={i}>
                     <TableCell>
                       <div className="flex items-center text-sm">
                         <Avatar
                           className="hidden mr-3 md:block"
-                          src={data.media.length > 0 && data.media[0]}
+                          src={item.node.media.length > 0 && item.node.media[0]}
                           alt="item image"
                         />
                       </div>
                     </TableCell>
                     <TableCell>
-                      <span className="text-sm">{data.category}</span>
+                      <span className="text-sm">
+                        {item.node.categoryByCategoryId.name}
+                      </span>
                     </TableCell>
                     <TableCell>
-                      <span className="text-sm">{data.subcategory}</span>
+                      <span className="text-sm">
+                        {item.node.subcategoryBySubcategoryId.name}
+                      </span>
                     </TableCell>
                     <TableCell>
                       <span className="text-sm">
@@ -148,73 +132,15 @@ function Dashboard() {
                     </TableCell>
                     <TableCell>
                       <Badge type="primary">
-                        <Button onClick={() => approve(item.id, data)} id={item.id} />
-                      </Badge>
-                    </TableCell>
-                    <TableCell>
-                      <Badge type="danger">
-                        <Delete id={item.id} colRef={"items"} />
-                      </Badge>
-                    </TableCell>
-                  </TableRow>
-                );
-              })}
-          </TableBody>
-        </Table>
-        <TableFooter>
-          <Pagination
-            totalResults={totalResults}
-            resultsPerPage={resultsPerPage}
-            label="Table navigation"
-            onChange={onPageChange}
-          />
-        </TableFooter>
-      </TableContainer>
-      <br />
-      <br />
-      <SectionTitle>open requests</SectionTitle>
-      <TableContainer>
-        <Table>
-          <TableHeader>
-            <tr>
-              <TableCell>Item</TableCell>
-              <TableCell>Category</TableCell>
-              <TableCell>Subcategory</TableCell>
-              <TableCell>Created Timestamp</TableCell>
-              <TableCell>Delete</TableCell>
-            </tr>
-          </TableHeader>
-          <TableBody>
-            {!requests.isLoading &&
-              requests.data &&
-              requests.data.docs &&
-              requests.data.docs.map((request, i) => {
-                const data = request.data();
-                return (
-                  <TableRow key={i}>
-                    <TableCell>
-                      <div className="flex items-center text-sm">
-                        <Avatar
-                          className="hidden mr-3 md:block"
-                          src={data.media.length > 0 && data.media[0]}
-                          alt="item image"
+                        <Button
+                          onClick={() => approve(item.node.id, item)}
+                          id={item.node.id}
                         />
-                      </div>
-                    </TableCell>
-                    <TableCell>
-                      <span className="text-sm">{data.category}</span>
-                    </TableCell>
-                    <TableCell>
-                      <span className="text-sm">{data.subcategory}</span>
-                    </TableCell>
-                    <TableCell>
-                      <span className="text-sm">
-                        {/* {data.createdTimestamp._date} */}
-                      </span>
+                      </Badge>
                     </TableCell>
                     <TableCell>
                       <Badge type="danger">
-                        <Delete id={request.id} colRef="requests" />
+                        <DeleteItem id={item.node.id} colRef={"items"} />
                       </Badge>
                     </TableCell>
                   </TableRow>
