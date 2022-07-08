@@ -13,6 +13,7 @@ import ThemedSuspense from "./components/ThemedSuspense";
 import { SidebarProvider } from "./context/SidebarContext";
 import { ThemeProvider } from "./context/ThemeContext";
 import "./index.css";
+import 'react-phone-input-2/lib/style.css'
 import * as serviceWorker from "./serviceWorker";
 
 import { Buffer } from "buffer";
