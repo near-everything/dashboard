@@ -1,6 +1,4 @@
-import React, { useState } from "react";
-import { ImageIcon, OutlineUploadIcon } from "../icons";
-import Button from "./Button";
+import React from "react";
 import FileUpload from "./FileUpload";
 
 function ImageUpload({ files, setFiles }) {

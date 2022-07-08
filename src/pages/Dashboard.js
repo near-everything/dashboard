@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import ApproveItem from "../components/ApproveItem";
 import Avatar from "../components/Avatar";
 import Badge from "../components/Badge";
-import Button from "../components/Button";
-import DeleteItem from "../components/Create/Delete";
+import DeleteItem from "../components/DeleteItem";
 import Pagination from "../components/Pagination";
 import Table from "../components/Table";
 import TableBody from "../components/TableBody";
@@ -14,6 +14,7 @@ import TableHeader from "../components/TableHeader";
 import TableRow from "../components/TableRow";
 import PageTitle from "../components/Typography/PageTitle";
 import SectionTitle from "../components/Typography/SectionTitle";
+import ViewItem from "../components/ViewItem";
 import { selectUser } from "../features/auth/authSlice";
 import { useItems } from "../features/items/itemsApi";
 import { mint } from "../features/near/nearSlice";
@@ -22,7 +23,6 @@ import response from "../utils/demo/tableData";
 function Dashboard() {
   const [page, setPage] = useState(1);
   const user = useSelector(selectUser);
-  const dispatch = useDispatch();
 
   const { data, isLoading, isError } = useItems();
 
@@ -34,10 +34,6 @@ function Dashboard() {
   function onPageChange(p) {
     setPage(p);
     // items.fetchNextPage();
-  }
-
-  function approve(id, data) {
-    dispatch(mint({ id, data }));
   }
 
   // on page change, load new sliced data
@@ -97,7 +93,8 @@ function Dashboard() {
               <TableCell>Item</TableCell>
               <TableCell>Category</TableCell>
               <TableCell>Subcategory</TableCell>
-              <TableCell>Created Timestamp</TableCell>
+              <TableCell>See Details</TableCell>
+              <TableCell>Approve</TableCell>
               <TableCell>Delete</TableCell>
             </tr>
           </TableHeader>
@@ -126,21 +123,18 @@ function Dashboard() {
                       </span>
                     </TableCell>
                     <TableCell>
-                      <span className="text-sm">
-                        {/* {data.createdTimestamp._date} */}
-                      </span>
+                      <Badge type="neutral">
+                        <ViewItem item={item} />
+                      </Badge>
                     </TableCell>
                     <TableCell>
                       <Badge type="primary">
-                        <Button
-                          onClick={() => approve(item.node.id, item)}
-                          id={item.node.id}
-                        />
+                        <ApproveItem item={item} />
                       </Badge>
                     </TableCell>
                     <TableCell>
                       <Badge type="danger">
-                        <DeleteItem id={item.node.id} colRef={"items"} />
+                        <DeleteItem id={item.node.id} />
                       </Badge>
                     </TableCell>
                   </TableRow>
