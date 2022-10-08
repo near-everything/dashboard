@@ -1,8 +1,12 @@
+import Head from "next/head";
 import Navbar from "../components/Navbar";
 
 export default function Home() {
   return (
     <div>
+      <Head>
+        <title>everything dashboard</title>
+      </Head>
       <main className="h-screen">
         <Navbar />
         <div className="flex flex-1 justify-center items-center h-3/4">
