@@ -1,8 +1,7 @@
-import { useUser } from "@auth0/nextjs-auth0";
 import Link from "next/link";
 
 function Navbar() {
-  const { user, isLoading } = useUser();
+  // const { user, isLoading } = useUser();
 
   return (
     <div className="navbar">
@@ -16,7 +15,7 @@ function Navbar() {
           </button>
         </Link>
       </div>
-      {isLoading ? null : (
+      {/* {isLoading ? null : (
         <>
           {user ? (
             <>
@@ -35,7 +34,7 @@ function Navbar() {
             </>
           )}
         </>
-      )}
+      )} */}
     </div>
   );
 }
