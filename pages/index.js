@@ -1,16 +1,13 @@
-import Header from "../components/Header";
-import ThingTable from "../components/ThingTable";
+import Navbar from "../components/Navbar";
 
 export default function Home() {
   return (
     <div>
       <main className="h-screen">
-        <Header />
+        <Navbar />
         <div className="flex flex-1 justify-center items-center h-3/4">
           <div className="text-center transition ease-in-out duration-500 hover:text-black">
-            <p className="text-sm mt-2">
-              this will be a dashboard.
-            </p>
+            <p className="text-sm mt-2">this will be a dashboard.</p>
             <p className="text-sm mt-2">
               the things you list in the marketplace can be found here.
             </p>
