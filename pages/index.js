@@ -5,7 +5,7 @@ export default function Home() {
   return (
     <div>
       <Head>
-        <title>everything dashboard</title>
+        <title>everything | dashboard</title>
       </Head>
       <main className="h-screen">
         <Navbar />
