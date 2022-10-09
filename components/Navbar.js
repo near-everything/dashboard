@@ -8,7 +8,7 @@ function Navbar() {
         <a href="https://about.everything.dev">
           <button className="btn btn-ghost">
             <div className="flex flex-col text-right">
-              <p className="normal-case text-4xl">everything</p>
+              <h1 className="normal-case text-4xl">everything</h1>
               <p className="text-sm justify-end">DASHBOARD</p>
             </div>
           </button>
