@@ -21,7 +21,7 @@ export default function Document() {
         <link rel='icon' type='image/png' sizes='32x32' href='/icons/favicon-32x32.png' />
         <link rel='icon' type='image/png' sizes='16x16' href='/icons/favicon-16x16.png' />
         <link rel='manifest' href='/manifest.json' />
-        <link rel='shortcut icon' href='/favicon.ico' />
+        <link rel='shortcut icon' href='/icons/favicon.ico' />
 
         <meta name='twitter:card' content='summary' />
         <meta name='twitter:url' content='https://everything.dev' />
@@ -35,6 +35,14 @@ export default function Document() {
         <meta property='og:site_name' content='everything' />
         <meta property='og:url' content='https://everything.dev' />
         <meta property='og:image' content='https://everything.dev/icons/apple-touch-icon.png' />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Inter&display=swap"
+          rel="stylesheet"
+        />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro&display=swap"
+          rel="stylesheet"
+        />
       </Head>
       <body className="text-white">
         <Main />
