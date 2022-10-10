@@ -44,7 +44,7 @@ export default function Document() {
           rel="stylesheet"
         />
       </Head>
-      <body className="text-white">
+      <body className="bg-black text-white">
         <Main />
         <NextScript />
       </body>
