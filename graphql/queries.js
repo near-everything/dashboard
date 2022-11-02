@@ -1,6 +1,6 @@
 import { gql } from "graphql-request";
 
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { graphqlClient } from "../app/api";
 
 export function useThingsByOwner(ownerId, options) {
@@ -48,4 +48,37 @@ export function useThingsByOwner(ownerId, options) {
     },
     options
   );
+}
+
+export function useDeleteThing() {
+  return useMutation((thingId) => {
+    return graphqlClient.request(
+      gql`
+        mutation deleteThing($id: Int!) {
+          deleteThing(input: { id: $id }) {
+            clientMutationId
+          }
+        }
+      `,
+      { id: thingId }
+    );
+  });
+}
+
+
+export function useCreateMedia() {
+  return useMutation((newMedia) => {
+    return graphqlClient.request(
+      gql`
+        mutation createMedia($input: MediaInput!) {
+          createMedia(input: { media: $input }) {
+            media {
+              id
+            }
+          }
+        }
+      `,
+      { input: newMedia }
+    );
+  });
 }
