@@ -1,5 +1,6 @@
 import { UserProvider } from "@auth0/nextjs-auth0";
 import { config } from "@fortawesome/fontawesome-svg-core";
+import "@fortawesome/fontawesome-svg-core/styles.css";
 import {
   Hydrate,
   QueryClient,
@@ -9,7 +10,6 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import Head from "next/head";
 import { useState } from "react";
 
-import "@fortawesome/fontawesome-svg-core/styles.css";
 import "react-toastify/dist/ReactToastify.css";
 import "swiper/css";
 import "swiper/css/effect-cards";
