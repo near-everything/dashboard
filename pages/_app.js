@@ -1,4 +1,5 @@
 import { UserProvider } from "@auth0/nextjs-auth0";
+import { config } from "@fortawesome/fontawesome-svg-core";
 import {
   Hydrate,
   QueryClient,
@@ -8,12 +9,14 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import Head from "next/head";
 import { useState } from "react";
 
+import "@fortawesome/fontawesome-svg-core/styles.css";
 import "react-toastify/dist/ReactToastify.css";
 import "swiper/css";
 import "swiper/css/effect-cards";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import "../styles/globals.css";
+config.autoAddCss = false;
 
 export default function App({ Component, pageProps }) {
   const [queryClient] = useState(() => new QueryClient());

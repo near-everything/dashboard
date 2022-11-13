@@ -162,11 +162,7 @@ function ThingTable() {
                 </label>
               </th>
               <th>
-                <label
-                  className="btn btn-xs"
-                >
-                  more
-                </label>
+                <label className="btn btn-xs">more</label>
               </th>
             </tr>
           );
@@ -175,22 +171,36 @@ function ThingTable() {
     );
   };
 
+  if (!user) {
+    return (
+      <div className="flex flex-col justify-center items-center h-full w-full">
+        <p>please login</p>
+      </div>
+    );
+  }
+
   if (isLoading) {
     return (
-      <PulseLoader
-        size={10}
-        color={"#e5e7eb"}
-        loading={isLoading}
-        speedMultiplier={1.5}
-      />
+      <div className="flex flex-col justify-center items-center h-full w-full">
+        <PulseLoader
+          size={10}
+          color={"#e5e7eb"}
+          loading={isLoading}
+          speedMultiplier={1.5}
+        />
+      </div>
     );
   }
   if (isError) {
-    return <h1>{error.message}</h1>;
+    return (
+      <div className="flex flex-col justify-center items-center h-full w-full">
+        <h1>{error.message}</h1>
+      </div>
+    );
   }
   if (data) {
     return (
-      <>
+      <div className="flex flex-col flex-1 mx-4 py-4 h-full">
         <Table
           data={data}
           isLoading={isLoading}
@@ -201,7 +211,7 @@ function ThingTable() {
         />
         <DetailsModal thing={details} />
         <UploadModal thing={upload} />
-      </>
+      </div>
     );
   }
 }

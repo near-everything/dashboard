@@ -1,4 +1,6 @@
+import { useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 import { useDeleteThing } from "../graphql/queries";
 import collapse from "../utils/collapse";
 import MediaReel from "./MediaReel";
@@ -6,6 +8,7 @@ import MediaReel from "./MediaReel";
 function DetailsModal({ thing }) {
   const [isEditEnabled, toggleEdit] = useState(false);
   const [images, setImages] = useState([]);
+  const queryClient = useQueryClient();
   const deleteThing = useDeleteThing();
 
   useEffect(() => {
@@ -16,6 +19,18 @@ function DetailsModal({ thing }) {
       setImages(isolatedUrls);
     }
   }, [thing]);
+
+  const deleteById = () => {
+    deleteThing.mutate(thing.id, {
+      onSuccess: async () => {
+        toast.success("deleted thing successfully");
+        queryClient.invalidateQueries({ queryKey: ['thingsByOwner'] })
+      },
+      onError: () => {
+        toast.error("error deleting thing, please try again.");
+      },
+    });
+  };
 
   return (
     <>
@@ -81,8 +96,8 @@ function DetailsModal({ thing }) {
               </button>
               <button
                 className="btn"
-                onClick={() => deleteThing.mutate(thing.id)}
-                disabled
+                onClick={deleteById}
+                // disabled
               >
                 Delete
               </button>

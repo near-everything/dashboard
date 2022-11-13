@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-html-link-for-pages */
 import { useUser } from "@auth0/nextjs-auth0";
 import Link from "next/link";
 
@@ -22,16 +23,16 @@ function Navbar() {
             <>
               <span className="flex flex-row items-center gap-4">
                 <p>{user.nickname}</p>
-                <Link href="/api/auth/logout">
+                <a href="/api/auth/logout">
                   <button className="btn normal-case">logout</button>
-                </Link>
+                </a>
               </span>
             </>
           ) : (
             <>
-              <Link href="/api/auth/login">
+              <a href="/api/auth/login">
                 <button className="btn normal-case">login</button>
-              </Link>
+              </a>
             </>
           )}
         </>
