@@ -11,6 +11,7 @@ import Head from "next/head";
 import { useState } from "react";
 
 import "react-toastify/dist/ReactToastify.css";
+import 'react-csv-importer/dist/index.css';
 import "swiper/css";
 import "swiper/css/effect-cards";
 import "swiper/css/navigation";

@@ -50,6 +50,40 @@ export function useThingsByOwner(ownerId, options) {
   );
 }
 
+export function useCreateThing() {
+  return useMutation((newThing) => {
+    return graphqlClient.request(
+      gql`
+        mutation createThing($input: CreateThingInput!) {
+          createThing(input: $input) {
+            thing {
+              id
+            }
+          }
+        }
+      `,
+      { input: newThing }
+    );
+  });
+}
+
+export function useCreateThingBulkUpload() {
+  return useMutation((newThing) => {
+    return graphqlClient.request(
+      gql`
+        mutation createThingBulkUpload($input: CreateThingBulkInput!) {
+          createThingBulkUpload(input: $input) {
+            thing {
+              id
+            }
+          }
+        }
+      `,
+      { input: newThing }
+    );
+  });
+}
+
 export function useDeleteThing() {
   return useMutation((thingId) => {
     return graphqlClient.request(

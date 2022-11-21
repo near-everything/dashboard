@@ -1,9 +1,13 @@
 import { useUser } from "@auth0/nextjs-auth0";
+import { faUpload } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import dynamic from "next/dynamic";
 import Image from "next/image";
 import { useState } from "react";
+import { Importer, ImporterField } from "react-csv-importer";
 import { PulseLoader } from "react-spinners";
 import { useThingsByOwner } from "../graphql/queries";
+import BulkUploadModal from "./BulkUploadModal";
 import DetailsModal from "./DetailsModal";
 import UploadModal from "./UploadModal";
 const Table = dynamic(() => import("./Table"), { ssr: false });
@@ -149,7 +153,7 @@ function ThingTable() {
                   className="btn btn-xs modal-button"
                   onClick={() => setUpload(thing.node)}
                 >
-                  u
+                  <FontAwesomeIcon icon={faUpload} />
                 </label>
               </th>
               <th>
@@ -201,6 +205,14 @@ function ThingTable() {
   if (data) {
     return (
       <div className="flex flex-col flex-1 mx-4 py-4 h-full">
+        <div className="flex w-full justify-end p-2">
+          <label htmlFor="bulk-upload-modal" className="btn modal-button">
+            <span>
+              <FontAwesomeIcon icon={faUpload} />
+              {" bulk upload"}
+            </span>
+          </label>
+        </div>
         <Table
           data={data}
           isLoading={isLoading}
@@ -211,6 +223,58 @@ function ThingTable() {
         />
         <DetailsModal thing={details} />
         <UploadModal thing={upload} />
+        <BulkUploadModal />
+        <div>
+        <Importer
+              chunkSize={10000}
+              assumeNoHeaders={false} // optional, keeps "data has headers" checkbox off by default
+              restartable={false} // optional, lets user choose to upload another file when import is complete
+              // onStart={({ file, preview, fields, columnFields }) => {
+              //   // optional, invoked when user has mapped columns and started import
+              //   console.log("starting import of file", file, "with fields", fields);
+              // }}
+              processChunk={async (rows, { startIndex }) => {
+                // required, may be called several times
+                // receives a list of parsed objects based on defined fields and user column mapping;
+                // (if this callback returns a promise, the widget will wait for it before parsing more data)
+                console.log("received batch of rows", rows);
+                await new Promise((resolve) => setTimeout(resolve, 500));
+                // for (const [i, row] of rows.entries()) {
+                //   await processRow(row);
+                // }
+              }}
+              onComplete={({ file, preview, fields, columnFields }) => {
+                // optional, invoked right after import is done (but user did not dismiss/reset the widget yet)
+                // showMyAppToastNotification();
+                console.log("finished import of file", file, "with fields", fields);
+              }}
+              onClose={({ file, preview, fields, columnFields }) => {
+                // optional, if this is specified the user will see a "Finish" button after import is done,
+                // which will call this when clicked
+                console.log("importer dismissed");
+              }}
+
+              // CSV options passed directly to PapaParse if specified:
+              // delimiter={...}
+              // newline={...}
+              // quoteChar={...}
+              // escapeChar={...}
+              // comments={...}
+              // skipEmptyLines={...}
+              // delimitersToGuess={...}
+              // chunkSize={...} // defaults to 10000
+              // encoding={...} // defaults to utf-8, see FileReader API
+            >
+              {/* could dynamically create importer fields by querying accepted attributes */}
+              <ImporterField name="1" label="1" />
+              <ImporterField name="2" label="2" />
+              <ImporterField name="3" label="3" />
+              <ImporterField name="4" label="4" />
+              <ImporterField name="5" label="5" />
+              <ImporterField name="6" label="6" />
+              <ImporterField name="7" label="7" />
+            </Importer>
+        </div>
       </div>
     );
   }
